@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Indian Fake News Verifier</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        body {
+            margin: 0;
+            font-family: 'Open Sans', sans-serif;
+            background: #f5f5f5 url('https://www.transparenttextures.com/patterns/old-maps.png');
+            background-size: cover;
+            color: #222;
+        }
+        header {
+            background-color: #222;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+            font-family: 'Merriweather', serif;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.2em;
+        }
+        main {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        h2 {
+            font-family: 'Merriweather', serif;
+            margin-top: 0;
+        }
+        label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 8px;
+            margin-top: 20px;
+        }
+        input[type="text"], textarea, input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 1em;
+        }
+        button {
+            background: #222;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1em;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        button:hover { background: #555; }
+        .badge {
+            display: inline-block;
+            padding: 6px 15px;
+            border-radius: 6px;
+            font-weight: bold;
+            color: white;
+            margin-left: 10px;
+        }
+        .fake { background-color: #dc3545; }
+        .real { background-color: #28a745; }
+        .check-evidence { background-color: #f59e0b; }
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: #555;
+            font-size: 0.9em;
+        }
+        a { color: #2563eb; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        @media (max-width: 600px) {
+            main { margin: 20px; padding: 15px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Indian Fake News Verifier</h1>
+    </header>
+
+    <main>
+        <div class="card">
+            <h2>Check News Text</h2>
+            <form action="/predict_text" method="POST">
+                <label>Paste news content here:</label>
+                <textarea name="text_input" rows="6" placeholder="Type or paste the news article..."></textarea>
+                <button type="submit">Check Text</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2>Check News URL</h2>
+            <form action="/predict_url" method="POST">
+                <label>Enter news URL:</label>
+                <input type="text" name="url_input" placeholder="https://example.com/news-article">
+                <button type="submit">Check URL</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2>Check News Image</h2>
+            <form action="/predict_image" method="POST" enctype="multipart/form-data">
+                <label>Upload image containing news:</label>
+                <input type="file" name="image_input" accept="image/*">
+                <button type="submit">Check Image</button>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        &copy; 2025 Indian Fake News Verifier. Built with Python & Flask.
+    </footer>
+</body>
+</html>

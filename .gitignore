@@ -1,0 +1,19 @@
+# Python cache and compiled files
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environment
+.venv/
+
+# Dataset and model files
+*.csv
+*.joblib
+*.pkl
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
