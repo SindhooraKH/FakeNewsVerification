@@ -1,131 +1,319 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Indian Fake News Verifier</title>
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-        /* Global Styles */
-        body {
-            margin: 0;
-            font-family: 'Open Sans', sans-serif;
-            background: #f5f5f5 url('https://www.transparenttextures.com/patterns/old-maps.png');
-            background-size: cover;
-            color: #222;
-        }
-        header {
-            background-color: #222;
-            color: #fff;
-            padding: 20px 0;
-            text-align: center;
-            font-family: 'Merriweather', serif;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
-        }
-        header h1 {
-            margin: 0;
-            font-size: 2.2em;
-        }
-        main {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 20px;
-        }
-        .card {
-            background: white;
-            border-radius: 10px;
-            padding: 25px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-        h2 {
-            font-family: 'Merriweather', serif;
-            margin-top: 0;
-        }
-        label {
-            font-weight: 600;
-            display: block;
-            margin-bottom: 8px;
-            margin-top: 20px;
-        }
-        input[type="text"], textarea, input[type="file"] {
-            width: 100%;
-            padding: 12px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            font-size: 1em;
-        }
-        button {
-            background: #222;
-            color: white;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 6px;
-            font-size: 1em;
-            margin-top: 20px;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-        button:hover { background: #555; }
-        .badge {
-            display: inline-block;
-            padding: 6px 15px;
-            border-radius: 6px;
-            font-weight: bold;
-            color: white;
-            margin-left: 10px;
-        }
-        .fake { background-color: #dc3545; }
-        .real { background-color: #28a745; }
-        .check-evidence { background-color: #f59e0b; }
-        footer {
-            text-align: center;
-            margin-top: 50px;
-            color: #555;
-            font-size: 0.9em;
-        }
-        a { color: #2563eb; text-decoration: none; }
-        a:hover { text-decoration: underline; }
-        @media (max-width: 600px) {
-            main { margin: 20px; padding: 15px; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NXT – News eXamine Tool</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+    body { background: #f9f9f9; color: #111; scroll-behavior: smooth; }
+
+    /* ===== HERO SECTION ===== */
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #ffffff 0%, #f1f1f1 100%);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* TYPEWRITER EFFECT */
+    .hero h1 {
+      font-size: 4rem;
+      font-weight: 800;
+      color: #111;
+      letter-spacing: 2px;
+      overflow: hidden;
+      white-space: nowrap;
+      border-right: 3px solid #111;
+      width: 0;
+      animation: typing 3s steps(30, end) forwards, blink 0.8s step-end infinite;
+    }
+
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+    @keyframes blink {
+      50% { border-color: transparent; }
+    }
+
+    .hero h2 {
+      font-size: 1.8rem;
+      font-style: italic;
+      font-weight: 400;
+      margin-top: 1rem;
+      color: #555;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 2s 3.5s ease forwards;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* DOWN ARROW */
+    .down-arrow {
+      position: absolute;
+      bottom: 50px;
+      font-size: 2rem;
+      color: #111;
+      cursor: pointer;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(10px); }
+      60% { transform: translateY(5px); }
+    }
+
+    /* ===== SECTION STYLE ===== */
+    .section {
+      padding: 80px 10%;
+      text-align: center;
+    }
+    .section h3 { font-size: 2.5rem; margin-bottom: 1rem; color: #111; }
+    .section p { font-size: 1.1rem; color: #555; max-width: 700px; margin: 0 auto 2rem; line-height: 1.6; }
+
+    /* ===== FLASHCARDS ===== */
+    .flashcards {
+      display: flex;
+      gap: 25px;
+      overflow-x: auto;
+      padding: 40px 0;
+      background: linear-gradient(90deg, #ffffff 0%, #f8f8f8 100%);
+      border-radius: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      background: #fff;
+      flex: 0 0 250px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      padding: 30px 20px;
+      text-align: center;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      cursor: pointer;
+      perspective: 1000px;
+    }
+
+    .card:hover {
+      transform: scale(1.05) rotateY(5deg);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+    }
+
+    .card:active {
+      transform: scale(0.98) rotateY(-5deg);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    }
+
+    .card img { width: 60px; margin-bottom: 15px; transition: transform 0.3s; }
+    .card:hover img { transform: rotate(5deg) scale(1.1); }
+    .card h4 { font-size: 1.2rem; margin-bottom: 10px; font-weight: 600; }
+    .card p { font-size: 0.95rem; color: #666; }
+
+    /* ===== VERIFY NOW BUTTON ===== */
+    .verify-now-button {
+      display: inline-block;
+      margin-top: 25px;
+      padding: 15px 35px;
+      background: #111;
+      color: #fff;
+      font-weight: 600;
+      font-size: 1.1rem;
+      border-radius: 8px;
+      transition: 0.3s;
+      text-decoration: none;
+    }
+    .verify-now-button:hover {
+      background: #333;
+      transform: scale(1.05);
+    }
+
+    /* ===== VERIFY SECTION ===== */
+    .verify-section {
+      background: #111;
+      color: #fff;
+      padding: 80px 10%;
+      border-radius: 15px;
+      margin: 40px auto;
+      max-width: 900px;
+      text-align: center;
+    }
+    .verify-section h3 { font-size: 2rem; margin-bottom: 1rem; color: #fff; }
+    .verify-section p { color: #ccc; margin-bottom: 2rem; }
+    .verify-section form { display: flex; flex-direction: column; gap: 15px; align-items: center; }
+    .verify-section input[type="text"], 
+    .verify-section input[type="url"], 
+    .verify-section input[type="file"] {
+      padding: 12px 15px;
+      width: 80%;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+    .verify-section button {
+      padding: 12px 25px;
+      border-radius: 8px;
+      border: none;
+      background: #fff;
+      color: #111;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .verify-section button:hover { background: #eaeaea; }
+
+    /* ===== FOOTER ===== */
+    footer {
+      padding: 40px 10%;
+      text-align: center;
+      background: #f5f5f5;
+      color: #111;
+      font-size: 0.9rem;
+      margin-top: 40px;
+      border-top: 1px solid #ddd;
+    }
+    footer a { color: #111; font-weight: 500; margin: 0 8px; }
+
+    /* FADE-IN ANIMATION */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease-out;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
 </head>
+
 <body>
-    <header>
-        <h1>Indian Fake News Verifier</h1>
-    </header>
 
-    <main>
-        <div class="card">
-            <h2>Check News Text</h2>
-            <form action="/predict_text" method="POST">
-                <label>Paste news content here:</label>
-                <textarea name="text_input" rows="6" placeholder="Type or paste the news article..."></textarea>
-                <button type="submit">Check Text</button>
-            </form>
-        </div>
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>NXT – News eXamine Tool</h1>
+    <h2>Where News Meets Reality</h2>
+    <div class="down-arrow" id="scrollDown">⬇</div>
+  </section>
 
-        <div class="card">
-            <h2>Check News URL</h2>
-            <form action="/predict_url" method="POST">
-                <label>Enter news URL:</label>
-                <input type="text" name="url_input" placeholder="https://example.com/news-article">
-                <button type="submit">Check URL</button>
-            </form>
-        </div>
+  <!-- About Section -->
+  <section class="section" id="about">
+    <h3>About NXT</h3>
+    <p>
+      NXT – News eXamine Tool is India’s most advanced AI-based news verification platform.  
+      Using Natural Language Processing (NLP), Web Search Analysis, and OCR, NXT identifies misinformation, detects fake images, and ensures transparency in media.  
+      Whether it’s a text article, image, or URL — NXT examines every source for truth.
+    </p>
 
-        <div class="card">
-            <h2>Check News Image</h2>
-            <form action="/predict_image" method="POST" enctype="multipart/form-data">
-                <label>Upload image containing news:</label>
-                <input type="file" name="image_input" accept="image/*">
-                <button type="submit">Check Image</button>
-            </form>
-        </div>
-    </main>
+    <a href="#verify" class="verify-now-button">Verify Now</a>
 
-    <footer>
-        &copy; 2025 Indian Fake News Verifier. Built with Python & Flask.
-    </footer>
+    <!-- Flashcards -->
+    <div class="flashcards" style="margin-top:40px;">
+      <div class="card fade-in">
+        <img src="https://img.icons8.com/ios-filled/100/artificial-intelligence.png"/>
+        <h4>AI-Powered Detection</h4>
+        <p>Advanced AI model analyzes news content and detects fake news with precision.</p>
+      </div>
+      <div class="card fade-in">
+        <img src="https://img.icons8.com/ios-filled/100/web.png"/>
+        <h4>Web Verification</h4>
+        <p>Cross-verifies with trusted Indian news sources for credibility validation.</p>
+      </div>
+      <div class="card fade-in">
+        <img src="https://img.icons8.com/ios-filled/100/image.png"/>
+        <h4>OCR for Images</h4>
+        <p>Extracts and verifies text from screenshots, scanned news, and social posts.</p>
+      </div>
+      <div class="card fade-in">
+        <img src="https://img.icons8.com/ios-filled/100/news.png"/>
+        <h4>Full Article Analysis</h4>
+        <p>Generates similarity scores, sources, and summary insights for every news item.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Verify Section -->
+  <section class="verify-section" id="verify">
+    <h3>Verify News</h3>
+    <p>Choose one of the options below to verify your news:</p>
+
+    <form action="/predict_text" method="post">
+      <input type="text" name="text_input" placeholder="Paste your news text here">
+      <button type="submit">Verify Text</button>
+    </form>
+
+    <br>
+
+    <form action="/predict_url" method="post">
+      <input type="url" name="url_input" placeholder="Enter news article URL">
+      <button type="submit">Verify URL</button>
+    </form>
+
+    <br>
+
+    <form action="/predict_image" method="post" enctype="multipart/form-data">
+      <input type="file" name="image_input" accept="image/*">
+      <button type="submit">Verify Image</button>
+    </form>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    &copy; 2025 NXT – News eXamine Tool | <a href="https://github.com/">GitHub</a> | Contact: info@nxtnews.com | Powered by AI & NLP
+  </footer>
+
+  <script>
+    // Smooth scroll on arrow click
+    document.getElementById('scrollDown').addEventListener('click', () => {
+      const aboutSection = document.getElementById('about');
+      window.scrollTo({
+        top: aboutSection.offsetTop - 50,
+        behavior: 'smooth'
+      });
+    });
+
+    // Fade-in animation for flashcards
+    const fadeElements = document.querySelectorAll('.fade-in');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.3 });
+    fadeElements.forEach(el => observer.observe(el));
+
+    // Interactive tilt effect on flashcards
+    document.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = ((y - centerY) / 15) * -1;
+        const rotateY = ((x - centerX) / 15);
+        card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+      });
+    });
+  </script>
+
 </body>
 </html>
