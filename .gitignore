@@ -17,3 +17,10 @@ Thumbs.db
 
 # Logs
 *.log
+# .gitignore
+train.csv
+*.csv
+.cache
+*.json
+.venv/
+__pycache__/

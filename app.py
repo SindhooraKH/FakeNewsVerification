@@ -106,7 +106,7 @@ def semantic_similarity(text1, text2):
 # Main processing function (Safe)
 # ------------------------------
 def process_text(text):
-    # ML prediction
+    # ML prediction (for reference only)
     model_probs = local_model.predict_proba([text])[0]
     model_confidence_fake = model_probs[1]
     model_confidence_real = model_probs[0]
@@ -126,25 +126,20 @@ def process_text(text):
             best_evidence = res
 
     # ----------------------------
-    # Smart Verdict Logic (Fixed)
+    # Verdict Logic based purely on similarity score
     # ----------------------------
-    HIGH_SIM_THRESHOLD = 0.8
-    LOW_SIM_THRESHOLD = 0.3
+    HIGH_SIM_THRESHOLD = 0.7   # Likely True ✅
+    MEDIUM_SIM_THRESHOLD = 0.3 # Check Evidence ⚠️
+    LOW_SIM_THRESHOLD = 0.0    # Likely False ❌
 
-    if best_evidence:
-        if best_score >= HIGH_SIM_THRESHOLD:
-            final_verdict = "Likely True ✅"
-            ml_pred_label = "Real"
-        elif ml_pred_label == "Fake" and best_score < LOW_SIM_THRESHOLD:
-            final_verdict = "Likely False ❌"
-        else:
-            final_verdict = "Check Evidence ⚠️"
+    if best_score >= HIGH_SIM_THRESHOLD:
+        final_verdict = "Likely True ✅"
+        ml_pred_label = "Real"
+    elif best_score >= MEDIUM_SIM_THRESHOLD:
+        final_verdict = "Check Evidence ⚠️"
+        ml_pred_label = "May be Real"
     else:
-        # If no evidence found
-        if ml_pred_label == "Fake" or best_score < LOW_SIM_THRESHOLD:
-            final_verdict = "Likely False ❌"
-        else:
-            final_verdict = "Likely True ✅"
+        final_verdict = "Likely False ❌"
 
     # Evidence snippet & link
     if best_evidence and final_verdict != "Likely False ❌":
@@ -165,8 +160,7 @@ def process_text(text):
         score=best_score,
         content=text
     )
-
-
+    
 # ------------------------------
 # Routes
 # ------------------------------
@@ -187,7 +181,6 @@ def predict_url():
     if not url_input:
         return "Please enter a URL!"
     try:
-        # ✅ Use headers to prevent 403
         headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
                           "AppleWebKit/537.36 (KHTML, like Gecko) "
