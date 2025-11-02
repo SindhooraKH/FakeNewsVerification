@@ -24,3 +24,4 @@ train.csv
 *.json
 .venv/
 __pycache__/
+train.csv
